@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name = "author" content = "Isabelle">
+	<meta name = "description" content = "Bingo viciante porem legal! PS: Pode causar pesadelos.">
+	<meta name = "keywords" content = "bingo, jogo, ilegal, crime, vicio">
+	<link rel="stylesheet" type="text/css"  href="style.css"/>
+	<script type="text/javascript" src="script.js"></script>
+    <title>Bingo!</title>
+</head>
+<body>
+	<div id = "maior">
+	<img id = "bg1" src = "img/background.jpg">
+    <h1> BINGO! </h1>
+
+    <div id = "forms">
+
+    	<h2>Add participante <br><input type="text" id="part" placeholder=" Nome, 1, 2, 3...">
+    	<button onclick="addPart()">+</button> </h2>
+
+   		<h2>Remover participante <br><input type="text" id="dpart" placeholder=" Nome">
+    	<button onclick="remPart()">-</button> </h2>
+
+	</div>
+		<input type="text" id="oQsaiu" readonly="true" placeholder="sorteado"/>
+
+		<table id="tabela1">
+            
+        </table>
+
+    	<button id = "bot" onclick="sortearNum()"></button>
+    	
+
+    </div>
+
+    <div id = "lateral">
+    	<button id = "botn" onclick="novoJogo()"></button>
+    	<img id = "bg2" src = "img/sidebar.jpg">
+	</div>
+</body>
+</html>

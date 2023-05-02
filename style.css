@@ -1,0 +1,146 @@
+
+h1{
+	font-family: 'Home';
+	color: #78b8b2;
+	font-size: 200px;
+	font-weight: lighter;
+	position:absolute;
+	top: -115px;
+	left: 35%;
+	z-index: 2;
+}
+
+div#maior{
+	width: 77.5%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	position: fixed;
+	z-index: 5;
+}
+
+div#forms{
+	z-index: 1000;
+	position: absolute;
+	top: 29%;
+	left: 15%;
+}
+
+div#lateral{
+	width: 22.5%;
+	height: 100%;
+	top: -150px;
+	right: 0px;
+	position: fixed;
+	z-index: 0;
+}
+
+h2{
+	font-family: 'Code';
+	font-size: 25px;
+	letter-spacing: 1.5px;
+	color: #222123;
+}
+
+#part, #dpart{
+	width: 250px;
+	height: 30px;
+	font-size: 20px;
+	background-color: #d9d9d9;
+	border: none;
+}
+
+#oQsaiu{
+	width: 300px;
+	height: 70px;
+	background-color: #d9d9d9;
+	border: none;
+	bottom:35%;
+	right:25%;
+	position: fixed;
+	font-family: 'Code';
+	font-size: 55px;
+	letter-spacing: 1.5px;
+	text-align: center;
+	z-index: 50;
+}
+
+button{
+	background-color: transparent;
+	border: solid;
+	border-color: #666666;
+	width: 30px;
+	height: 30px;
+	color: #666666;
+	font-size: 20px;
+}
+
+#bot{
+	background-color: transparent;
+	border: none;
+	width: 341px;
+	height: 101px;
+	top:35%;
+	position: absolute;
+	right: 15%;
+	z-index: 30;
+	text-align: center;
+	background-image: url(img/generatenumber.png);
+}
+
+#botn{
+	background-color: transparent;
+	border: none;
+	width: 221px;
+	height: 169px;
+	top:85%;
+	position: absolute;
+	z-index: 30;
+	right: 20%;
+	background-image: url(img/newgame.png);
+}
+
+img#bg1{
+	width: 77.5%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	position: fixed;
+	z-index: 1;
+}
+
+img#bg2{
+	width: 35%;
+	height: 150%;
+	top: -150px;
+	right: 0px;
+	position: fixed;
+	z-index: 0;
+}
+
+table{
+	border-color: #7c7c7c;
+	font-family: 'Code';
+	font-size: 25px;
+	background-color: #f7f7f7;
+	z-index: 50;
+	top:55%;
+	left: 7%;
+	position: absolute;
+}
+
+td{
+	width: 50px;
+	height: 40px;
+	background-color: #e1dacb;
+	text-align: center;
+}
+
+@font-face {
+  	font-family: 'Home';
+  	src: url("fonts/Princetown ICG.ttf");
+}
+@font-face {
+  	font-family: 'Code';
+  	src: url("fonts/code bold.otf");
+}
