@@ -1,0 +1,159 @@
+
+button {
+	margin: 50px;
+	font-family: inherit;
+	z-index: 5555;
+}
+
+.fill {
+	font-size: 20px;
+	font-weight: 200;
+	letter-spacing: 1px;
+	padding: 13px 50px 13px;
+	outline: 0;
+	border: 1px solid black;
+	cursor: pointer;
+	position: relative;
+	background-color: rgba(0, 0, 0, 0);
+  }
+  
+  .fill::after {
+	content: "";
+	background-color: #948d63;
+	width: 100%;
+	z-index: -1;
+	position: absolute;
+	height: 100%;
+	top: 7px;
+	left: 7px;
+	transition: 0.2s;
+  }
+  
+  .fill:hover::after {
+	top: 0px;
+	left: 0px;
+  }
+
+div#main-page{
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	position: fixed;
+	z-index: 0;
+	background-color: #f3fce7;
+}
+
+img#banner{
+	width: 100%;
+	height: auto;
+	bottom: 0px;
+	left: 0px;
+	position: fixed;
+	z-index: 0;
+}
+
+div#table-space{
+	width: 90%;
+	height: 40%;
+	bottom: 10%;
+	background-color: green;
+	z-index: 9999;
+	position: absolute;
+}
+
+table{
+	border-color: #7c7c7c;
+	display: inline-block; /* Add this line to make tables inline-block */
+	font-size: 25px;
+	background-color: #f7f7f7;
+	z-index: 50;
+	margin: 5%;
+	position: relative;
+    margin-right: 20px; /* Adjust the spacing between tables */
+}
+
+td{
+	width: 50px;
+	height: 40px;
+	background-color: #e1dacb;
+	text-align: center;
+	
+}
+
+div#sidebar{
+	width: 10%;
+	height: 100%;
+	top: 0px;
+	right: 0px;
+	position: fixed;
+	z-index: 1;
+}
+
+img#sidebar-background{
+	width: auto;
+	height: 100%;
+	top: 0px;
+	right: 0px;
+	position: fixed;
+	z-index: 2;
+}
+
+div#forms{
+	z-index: 1000;
+	position: absolute;
+	top: 29%;
+	left: 15%;
+}
+
+p{
+	margin: 5px;
+}
+
+#add-p, #del-p{
+	width: 250px;
+	height: 30px;
+	font-size: 20px;
+	background-color: #d9d9d9;
+	border: none;
+}
+
+#number-drawn{
+	width: 300px;
+	height: 70px;
+	background-color: #d9d9d9;
+	border: none;
+	bottom:35%;
+	right:25%;
+	position: fixed;
+	font-family: 'Code';
+	font-size: 55px;
+	letter-spacing: 1.5px;
+	text-align: center;
+	z-index: 50;
+}
+
+#button-draw-number{
+	background-color: transparent;
+	border: none;
+	width: 341px;
+	height: 101px;
+	top:35%;
+	position: absolute;
+	right: 15%;
+	z-index: 30;
+	text-align: center;
+	background-image: url(img/generatenumber.png);
+}
+
+#button-new-game{
+	background-color: transparent;
+	border: none;
+	width: 221px;
+	height: 169px;
+	top:85%;
+	position: absolute;
+	z-index: 30;
+	right: 20%;
+	background-image: url(img/newgame.png);
+}
