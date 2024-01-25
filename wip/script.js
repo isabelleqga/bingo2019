@@ -1,73 +1,100 @@
+// Get the modal and buttons
+var modal = document.getElementById('add-part');
+var openModalBtn = document.getElementById('openModalBtn');
+var closeModalBtn = document.getElementById('closeModalBtn');
+
+// Open the modal
+openModalBtn.onclick = function() {
+    modal.style.display = 'block';
+}
+
+// Close the modal
+closeModalBtn.onclick = function() {
+    modal.style.display = 'none';
+}
+
+// Close the modal if the user clicks outside the modal
+window.onclick = function(event) {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+
 // lista de jogadores
-var jogadores = [];
+var players = [];
 // qnt de jogadores pra facilitar minha vida
-var jogadoresqnt = 0;
+var players_quantity = 0;
 // posso declarar isso em outro canto mas
 // nao vou mexer no q ta quieto
-var complet;
-var divi;
+var name;
+var numbers;
 var numSort;
 
 // alert("-------------REGRAS \n • O limite de jogadores é 6 \n • O máximo de números por jogador é 10 \n • Os números escolhidos devem estar entre 0 - 20 \n • O jogador deve cadastrar todos os seus números de uma vez \n • O nome deve ter no máximo 8 caracteres \n • Dois jogadores não podem ter o mesmo nome \n • O mesmo jogador não pode escolher o mesmo número duas vezes \n --- May the odds be ever in your favour :)");
 
 function addPart() {
   // pega td a string
-  complet = document.getElementById("part").value;
+  name = document.getElementById("add-p-name").value;
+  numbers = document.getElementById("add-p-numbers").value;
   //divide a string entre as virgulas e limita a qnt de numeros
-  divi = complet.split(",", 11);
+  numbers = numbers.split(" ", 9);
   // ve se o nome eh grande dms
-  if (divi[0].length > 8) {
+  if (name.length > 12) {
     alert("Escolha um nome menor.");
     // ve se n tem jogador dms
-  } else if (jogadoresqnt >= 6) {
+  } else if (players_quantity >= 5) {
     alert("Rodada lotada.");
-  } else if (divi.length < 2) {
+  } else if (numbers.length < 9) {
     // ve se adicionou pelo menos um numero
-    alert("Adicione algum numero para jogar.");
+    alert("Adicione nove números para jogar.");
   } else {
     // adiciona jogador na lista
-    jogadores.push(divi[0]);
+    players.push(name);
     // passos de validacao
-    // explica nas funcoes
-    if (validarJogador()) {
-      if (validarNum2()) {
-        if (validarNumeros()) {
-          jogadoresqnt++;
-          var table = document.getElementById("tabela1");
+    if (sameNamePlayer()) {
+      if (sameNumberTwice()) {
+        if (numberOutOfRange()) {
+          players_quantity++;
+          var table = document.getElementById("table"+players_quantity);
 
-          var row = table.insertRow(0);
-          var cell = row.insertCell(0);
-          cell.innerHTML = divi[0];
+          var header =  document.getElementById("h"+players_quantity);
+          header.innerHTML = name;
 
-          for (var i = 1; i <= divi.length - 1; i++) {
-            var cell = row.insertCell(i);
-            cell.innerHTML = parseInt(divi[i]);
+          var a = 0;
+          for (var i = 1; i < 4; i++) {
+            for (var j = 1; j < 4; j++) {
+              var cell = document.getElementById("c"+players_quantity+i+j);
+              cell.innerHTML = parseInt(numbers[a]);
+              a++;
+            }
           }
+          
           //zera as variaveis
-          complet = [];
-          divi = [];
+          name = "";
+          numbers = [];
+          numbers_split = [];
         } else {
           alert("Escolha o mesmo numero so uma vez.");
-          jogadores.pop();
+          players.pop();
         }
       } else {
         alert("Algum dos seus numeros nao segue as regras.");
-        jogadores.pop();
+        players.pop();
       }
     } else {
-      alert("Escolha outro user.");
-      jogadores.pop();
+      alert("Escolha outro nome.");
+      players.pop();
     }
   }
 }
 
-function validarJogador() {
+function sameNamePlayer() {
   // ve se n tem dois jogadores com o msm nome
   var validade = true;
-  for (var i = 0; i <= jogadores.length - 1; i++) {
-    for (var j = 0; j <= jogadores.length - 1; j++) {
+  for (var i = 0; i <= players.length - 1; i++) {
+    for (var j = 0; j <= players.length - 1; j++) {
       if (i != j) {
-        if (jogadores[i] == jogadores[j]) {
+        if (players[i] ==players[j]) {
           validade = false;
         }
       }
@@ -76,13 +103,30 @@ function validarJogador() {
   return validade;
 }
 
-function validarNumeros() {
+function sameNumberTwice() {
+  // checa se
+  // os numeros selecionados estao no limite (0-20)
+  // foram selecionados !numeros!
+  var numOk = true;
+  for (var i = 1; i <= numbers.length - 1; i++) {
+    if (
+      parseInt(numbers[i]) > 70 ||
+      parseInt(numbers[i]) < 0 ||
+      isNaN(parseInt(numbers[i]))
+    ) {
+      numOk = false;
+    }
+  }
+  return numOk;
+}
+
+function numberOutOfRange() {
   // ve se os numeros q a pessoa escolheu n estao repetidos
   var validaden = true;
-  for (var i = 0; i <= divi.length - 1; i++) {
-    for (var j = 0; j <= divi.length - 1; j++) {
+  for (var i = 0; i <= numbers.length - 1; i++) {
+    for (var j = 0; j <= numbers.length - 1; j++) {
       if (i != j) {
-        if (divi[i] == divi[j]) {
+        if (numbers[i] == numbers[j]) {
           validaden = false;
         }
       }
@@ -92,16 +136,16 @@ function validarNumeros() {
 }
 
 function remPart() {
-  if (jogadoresqnt > 0) {
+  if (players_quantity > 0) {
     if (jogardorExiste()) {
       // pra isso funcionar tem q inverter a array
-      jogadores.reverse();
-      var a = jogadores.indexOf(document.getElementById("dpart").value);
+      players.reverse();
+      var a = players.indexOf(document.getElementById("dpart").value);
       document.getElementById("tabela1").deleteRow(a);
-      jogadores.splice(a, 1);
+      players.splice(a, 1);
       // ai inverte d nv dps de tirar
-      jogadores.reverse();
-      jogadoresqnt--;
+      players.reverse();
+      players_quantity--;
     }
   } else {
     alert("Esse jogador nao existe.");
@@ -113,8 +157,8 @@ function remPart() {
 function jogardorExiste() {
   // vai checar se o jogador q ta tentando tirar existe
   var vale = false;
-  for (var i = 0; i <= jogadores.length - 1; i++) {
-    if (document.getElementById("dpart").value == jogadores[i]) {
+  for (var i = 0; i <= players.length - 1; i++) {
+    if (document.getElementById("dpart").value == players[i]) {
       vale = true;
     }
   }
@@ -129,70 +173,69 @@ function jogardorExiste() {
 
 function sortearNum() {
   // sorteia nums entre 0 e 20
-  numSort = Math.floor(Math.random() * 20 + 1);
+  numSort = Math.floor(Math.random() * 60 + 1);
   // marca na tabela e ve se alguem ganhou
-  verificar();
+  fillMainTable();
+  checkPlayerNumbers();
   // no lugar de um alert decidi fazer uma caixa com os numsorteados
-  var boxx = document.getElementById("oQsaiu");
+  var boxx = document.getElementById("number-drawn");
   boxx.value = numSort;
 }
 
-function verificar() {
+function fillMainTable() {
   // tabela
-  var oTabela = document.getElementById("tabela1");
-  // linha
-  var linhaTam = oTabela.rows.length;
+  var main_table = document.getElementById("numbers-table");
   // loop nas linhas
-  for (i = 0; i < linhaTam; i++) {
+  for (i = 0; i < 6; i++) {
     // celulas da linha
-    var oCels = oTabela.rows.item(i).cells;
-    // qntds cels na linha
-    var celTam = oCels.length;
+    var main_cells = main_table.rows.item(i).cells;
     // loop nas cels da linha
-    for (var j = 1; j < celTam; j++) {
+    for (var j = 1; j < 10; j++) {
       // valor das cels
-      var celVal = parseInt(oCels.item(j).innerHTML);
-      if (celVal == numSort) {
-        oCels[j].style.backgroundColor = "lightblue";
+      var cellValue = parseInt(main_cells.item(j).innerHTML);
+      if (cellValue == numSort) {
+        main_cells[j].style.backgroundColor = "#ede5a0";
         // pinta as cels sorteadas
       }
     }
-    var celCrt = 0;
-    for (var j = 0; j < celTam; j++) {
-      if (oCels[j].style.backgroundColor == "lightblue") {
-        celCrt++;
-        // conta as cels pintadas
+  }
+}
+
+function checkPlayerNumbers() {
+  for (player = 1; player <= players.length; player++) {
+    // tabela
+    var player_table = document.getElementById("table"+player);
+    
+    var cellsChecked = 0; 
+    for (var i = 1; i < 4; i++) {
+      for (var j = 1; j < 4; j++) {
+        var cell = document.getElementById("c"+player+i+j);
+        var cellValue = parseInt(cell.innerHTML);
+        if (cellValue == numSort) {
+          cell.style.backgroundColor = "#ede5a0";
+          // pinta as cels sorteadas
+        }
+        if (cell.style.backgroundColor) {
+          cellsChecked++;
+          // conta as cels pintadas
+        }
+        console.log("player: "+player)
+        console.log("cellsChecked: "+cellsChecked)
       }
     }
-    if (celTam - 1 == celCrt) {
-      // ve se tds as cels estao pintadas
-      oCels[0].style.backgroundColor = "lightblue";
-      // pinta nome do ganhdor
-      var nomeGan = oCels.item(0).innerHTML;
-      // anuncia
-      alert(nomeGan + " ganhou! Parabéns :)");
-      //novoJogo();
+
+    if (cellsChecked == 9) {
+        var nomeGan = document.getElementById("h"+player);
+        // anuncia
+        alert(nomeGan.innerHTML + " ganhou! Parabéns :)");
+        //novoJogo();
     }
   }
+  
 }
 
 function novoJogo() {
   location.reload();
 }
 
-function validarNum2() {
-  // checa se
-  // os numeros selecionados estao no limite (0-20)
-  // foram selecionados !numeros!
-  var numOk = true;
-  for (var i = 1; i <= divi.length - 1; i++) {
-    if (
-      parseInt(divi[i]) > 20 ||
-      parseInt(divi[i]) < 0 ||
-      isNaN(parseInt(divi[i]))
-    ) {
-      numOk = false;
-    }
-  }
-  return numOk;
-}
+
