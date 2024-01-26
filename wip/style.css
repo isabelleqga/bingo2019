@@ -39,9 +39,9 @@ div#draw-space {
 }
 
 #numbers-table td {
-  width: 25px; /* Adjust the width of each cell as needed */
-  height: 25px; /* Adjust the height of each cell as needed */
-  text-align: center; /* Center the content horizontally */
+  width: 25px; 
+  height: 25px; 
+  text-align: center; 
   background-color: #e1dacb;
   opacity: 70%;
 }
@@ -54,27 +54,71 @@ div#table-space {
   z-index: 5;
   position: absolute;
   display: flex;
-  flex-direction: row; /* Use 'row' to arrange tables horizontally */
-  justify-content: center; /* Center the tables horizontally */
-  align-items: center; /* Center the tables vertically */
+  flex-direction: row; 
+  justify-content: center; 
+  align-items: center;
 }
 
 table {
   border-color: #7c7c7c;
-  font-size: 25px;
+  font-size: 20px;
   background-color: #f7f7f7;
   z-index: 50;
-  margin: 0 1.3%; /* Adjust the horizontal margin between tables */
+  margin: 0 1.3%; 
   position: relative;
 }
 
-p{
-	margin: 5px;
+th{
+	font-size: 15px;
+	padding: 7px;
 }
 
 h1 {
   font-family: "fox in the snow";
-  margin-bottom: 10px; /* Adjust as needed for spacing between the heading and tables */
+  margin-bottom: 10px; 
+}
+
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#openModalBtn {
+  border-radius: 50%;
+  background-color: #f56944; 
+  color: white; 
+  border: none; 
+  text-align: center; 
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+#button-generate{
+	border: none;
+	border-radius: 50%;
+	padding: 3px;
+}
+
+#button-p{
+	border-radius: 15%;
+  	background-color: #f56944; 
+  	color: white; 
+	border: none; 
+	font-size: 13px;
+	font-style: italic;
+	padding: 3px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#openModalBtn:hover, #button-generate:hover , #button-p:hover{
+  background-color: #fdc894; 
+}
+
+button{
+	cursor: pointer;
 }
 
 td{
@@ -99,19 +143,20 @@ div#sidebar{
 
 .fill {
 	margin: 15%;
-	font-weight: bolder;
 	z-index: 5555;
 	margin-bottom: 30%;
 	font-size: 12px;
 	letter-spacing: 1px;
 	padding: 10px 40px 10px;
 	outline: 0;
-	border: 1px solid black;
+	border: 1px solid white;
 	cursor: pointer;
 	position: relative;
+	color: white;
 	background-color: rgba(0, 0, 0, 0);
   	align-self: center; 
   	width: 70%;
+  	font-family: "Times New Roman";
   }
   
   .fill::after {
@@ -207,4 +252,9 @@ h2{
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+@font-face {
+  font-family: "fox in the snow";
+  src: url('./fonts/foxinthesnow.ttf') format('.ttf');
 }

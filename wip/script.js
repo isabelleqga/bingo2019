@@ -20,46 +20,44 @@ window.onclick = function(event) {
     }
 }
 
-// lista de jogadores
+// List of players' names
 var players = [];
-// qnt de jogadores pra facilitar minha vida
+// Amount of players 
 var players_quantity = 0;
-// posso declarar isso em outro canto mas
-// nao vou mexer no q ta quieto
+// Name and numbers of new player
 var name;
 var numbers;
-var numSort;
+// Number drawn in the game
+var number_drawn;
+// Already drawn numbers
+var drawnNumbers = []; 
 
 // alert("-------------REGRAS \n • O limite de jogadores é 6 \n • O máximo de números por jogador é 10 \n • Os números escolhidos devem estar entre 0 - 20 \n • O jogador deve cadastrar todos os seus números de uma vez \n • O nome deve ter no máximo 8 caracteres \n • Dois jogadores não podem ter o mesmo nome \n • O mesmo jogador não pode escolher o mesmo número duas vezes \n --- May the odds be ever in your favour :)");
 
 function addPart() {
-  // pega td a string
+  // Gets information from the inputs 
   name = document.getElementById("add-p-name").value;
   numbers = document.getElementById("add-p-numbers").value;
-  //divide a string entre as virgulas e limita a qnt de numeros
-  numbers = numbers.split(" ", 9);
-  // ve se o nome eh grande dms
-  if (name.length > 12) {
-    alert("Escolha um nome menor.");
-    // ve se n tem jogador dms
-  } else if (players_quantity >= 5) {
-    alert("Rodada lotada.");
-  } else if (numbers.length < 9) {
-    // ve se adicionou pelo menos um numero
-    alert("Adicione nove números para jogar.");
+  numbers = numbers.split(",", 9);
+  // Limits to 5 players per game
+  if (players_quantity >= 5) {
+    alert("This round is full.");
+  } else if (numbers.length != 9) {
+    alert("You must choose nine numbers to play.");
   } else {
-    // adiciona jogador na lista
+    // Adds player's name to the list
     players.push(name);
-    // passos de validacao
-    if (sameNamePlayer()) {
+    // Validates the player's name (must be unique)
+    if (sameNamePlayer()&&name!=="") {
+      // Validates the player's numbers (each number only once)
       if (sameNumberTwice()) {
+        // Validates the player's numbers (must be in the 1-60 range)
         if (numberOutOfRange()) {
           players_quantity++;
-          var table = document.getElementById("table"+players_quantity);
-
-          var header =  document.getElementById("h"+players_quantity);
-          header.innerHTML = name;
-
+          // Writes player's name in their header
+          var player_header =  document.getElementById("h"+players_quantity);
+          player_header.innerHTML = name;
+          // Writes player's numbers in their table
           var a = 0;
           for (var i = 1; i < 4; i++) {
             for (var j = 1; j < 4; j++) {
@@ -68,72 +66,150 @@ function addPart() {
               a++;
             }
           }
-          
-          //zera as variaveis
+          // Empties variables
           name = "";
           numbers = [];
-          numbers_split = [];
+          document.getElementById("add-p-name").value = "";
+          document.getElementById("add-p-numbers").value = "";
         } else {
-          alert("Escolha o mesmo numero so uma vez.");
+          alert("You can only pick each number once.");
           players.pop();
         }
       } else {
-        alert("Algum dos seus numeros nao segue as regras.");
+        alert("Some of your numbers don't follow the rules.");
         players.pop();
       }
     } else {
-      alert("Escolha outro nome.");
+      alert("Pick another name.");
       players.pop();
     }
   }
 }
 
+function generatePlayersNumbers() {
+  var randomNumbers = [];
+  while (randomNumbers.length < 9) {
+    var randomNumber = Math.floor(Math.random() * 60) + 1;
+    if (!randomNumbers.includes(randomNumber)) {
+      randomNumbers.push(randomNumber);
+    }
+  }
+  document.getElementById("add-p-numbers").value = randomNumbers;
+}
+
 function sameNamePlayer() {
-  // ve se n tem dois jogadores com o msm nome
-  var validade = true;
+  // Player's name is unique?
+  var isUnique = true;
   for (var i = 0; i <= players.length - 1; i++) {
     for (var j = 0; j <= players.length - 1; j++) {
       if (i != j) {
-        if (players[i] ==players[j]) {
-          validade = false;
+        if (players[i]==players[j]) {
+          isUnique = false;
         }
       }
     }
   }
-  return validade;
+  return isUnique;
 }
 
-function sameNumberTwice() {
-  // checa se
-  // os numeros selecionados estao no limite (0-20)
-  // foram selecionados !numeros!
-  var numOk = true;
+function numberOutOfRange() {
+  // Numbers are in the 1-60 range?
+  var isInRange = true;
   for (var i = 1; i <= numbers.length - 1; i++) {
     if (
       parseInt(numbers[i]) > 70 ||
       parseInt(numbers[i]) < 0 ||
       isNaN(parseInt(numbers[i]))
     ) {
-      numOk = false;
+      isInRange = false;
     }
   }
-  return numOk;
+  return isInRange;
 }
 
-function numberOutOfRange() {
-  // ve se os numeros q a pessoa escolheu n estao repetidos
-  var validaden = true;
+function sameNumberTwice() {
+  // Numbers are unique?
+  var isUnique = true;
   for (var i = 0; i <= numbers.length - 1; i++) {
     for (var j = 0; j <= numbers.length - 1; j++) {
       if (i != j) {
         if (numbers[i] == numbers[j]) {
-          validaden = false;
+          isUnique = false;
         }
       }
     }
   }
-  return validaden;
+  return isUnique;
 }
+
+function drawNumber() {
+  // Range from 0 to 60, no repeats
+  do {
+    number_drawn = Math.floor(Math.random() * 60 + 1);
+  } while (drawnNumbers.includes(number_drawn) && drawnNumbers.length < 60);
+  drawnNumbers.push(number_drawn);
+  // Drawn number in the field
+  var number_drawn_field = document.getElementById("number-drawn");
+  if (drawnNumbers.length > 60){
+    number_drawn_field.value = "No numbers left!";
+  }else{
+    number_drawn_field.value = number_drawn;
+  }
+  // Checks number in the tables (main and players')
+  fillMainTable();
+  checkPlayerNumbers();
+}
+
+function fillMainTable() {
+  // Paints cell with the drawn number
+  var main_table = document.getElementById("numbers-table");
+  for (i = 0; i < 6; i++) {
+    var main_cells = main_table.rows.item(i).cells;
+    for (var j = 0; j < 10; j++) {
+      var cellValue = parseInt(main_cells.item(j).innerHTML);
+      if (cellValue == number_drawn) {
+        main_cells[j].style.backgroundColor = "#ede5a0";
+      }
+    }
+  }
+}
+
+function checkPlayerNumbers() {
+  // Paints player's cells with the drawn number
+  // One player at a time
+  for (player = 1; player <= players.length; player++) {
+    console.log(player)
+    var player_table = document.getElementById("table"+player);
+    // Checks if the player won (all number are painted)
+    var cells_checked = 0; 
+    for (var i = 1; i < 4; i++) {
+      for (var j = 1; j < 4; j++) {
+        var cell = document.getElementById("c"+player+i+j);
+        var cellValue = parseInt(cell.innerHTML);
+        if (cellValue == number_drawn) {
+          // Paints cell
+          cell.style.backgroundColor = "#ede5a0";
+        }
+        if (cell.style.backgroundColor) {
+          // Counts how many cells are painted
+          cells_checked ++;
+        }
+      }
+    }
+    // If 9 of their cells are painted, the player won
+    if (cells_checked  == 9) {
+        var winner = document.getElementById("h"+player);
+        alert(winner.innerHTML + " ganhou! Parabéns :)");
+        //novoJogo();
+    }
+  }
+  
+}
+
+function novoJogo() {
+  location.reload();
+}
+
 
 function remPart() {
   if (players_quantity > 0) {
@@ -170,72 +246,3 @@ function jogardorExiste() {
     alert("Esse jogador nao existe.");
   }
 }
-
-function sortearNum() {
-  // sorteia nums entre 0 e 20
-  numSort = Math.floor(Math.random() * 60 + 1);
-  // marca na tabela e ve se alguem ganhou
-  fillMainTable();
-  checkPlayerNumbers();
-  // no lugar de um alert decidi fazer uma caixa com os numsorteados
-  var boxx = document.getElementById("number-drawn");
-  boxx.value = numSort;
-}
-
-function fillMainTable() {
-  // tabela
-  var main_table = document.getElementById("numbers-table");
-  // loop nas linhas
-  for (i = 0; i < 6; i++) {
-    // celulas da linha
-    var main_cells = main_table.rows.item(i).cells;
-    // loop nas cels da linha
-    for (var j = 1; j < 10; j++) {
-      // valor das cels
-      var cellValue = parseInt(main_cells.item(j).innerHTML);
-      if (cellValue == numSort) {
-        main_cells[j].style.backgroundColor = "#ede5a0";
-        // pinta as cels sorteadas
-      }
-    }
-  }
-}
-
-function checkPlayerNumbers() {
-  for (player = 1; player <= players.length; player++) {
-    // tabela
-    var player_table = document.getElementById("table"+player);
-    
-    var cellsChecked = 0; 
-    for (var i = 1; i < 4; i++) {
-      for (var j = 1; j < 4; j++) {
-        var cell = document.getElementById("c"+player+i+j);
-        var cellValue = parseInt(cell.innerHTML);
-        if (cellValue == numSort) {
-          cell.style.backgroundColor = "#ede5a0";
-          // pinta as cels sorteadas
-        }
-        if (cell.style.backgroundColor) {
-          cellsChecked++;
-          // conta as cels pintadas
-        }
-        console.log("player: "+player)
-        console.log("cellsChecked: "+cellsChecked)
-      }
-    }
-
-    if (cellsChecked == 9) {
-        var nomeGan = document.getElementById("h"+player);
-        // anuncia
-        alert(nomeGan.innerHTML + " ganhou! Parabéns :)");
-        //novoJogo();
-    }
-  }
-  
-}
-
-function novoJogo() {
-  location.reload();
-}
-
-
